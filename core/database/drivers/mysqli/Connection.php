@@ -11,6 +11,8 @@ class Connection extends DatabaseConnection implements DatabaseInterface
 	{
 		$this->connection = new \Mysqli($this->host, $this->user, $this->password, $this->database);
 	}
+	
+	
 
 }
 

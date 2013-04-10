@@ -2,7 +2,7 @@
 
 namespace SimpleFw\Core\Database;
 
-//use SimpleFw\Core\Database\Drivers as Drivers;
+use SimpleFw\Core\Database\Drivers as Drivers;
 
 class Database 
 {
@@ -23,12 +23,16 @@ class Database
 		$database = preg_replace("/\//", "", $dsn_arr['path']);
 		$this->connection->setDatabase($database);
 		$this->connection->connect();
+		$query_class = "SimpleFw\Core\Database\Drivers\\".$db_driver."\\Query";
+		$this->query = new $query_class($this->connection->getConnection());
+		$result_class = "SimpleFw\Core\Database\Drivers\\".$db_driver."\\Result";
+		$this->query->setResult(new $result_class());
 		//$this->setQuery($this->connection->getConnection());
 	}
 
-	public function setQuery($connection)
+	public function setQuery($query)
 	{
-		$this->query = new Query($connection);
+		$this->query = new Query($this->connection);
 	} 
 
 	public function getQuery()

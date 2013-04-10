@@ -22,7 +22,7 @@ class Controller
 		return $this->query;
 	}
 
-	public function setTemplate($name)
+	public function setTemplate($template)
 	{
 		$this->template = $template;
 	}	
@@ -30,6 +30,16 @@ class Controller
 	public function getTemplate()
 	{
 		return $this->template;
+	}
+	
+	public function setLayout($layout)
+	{
+		$this->layout = $layout;
+	}	
+
+	public function getLayout()
+	{
+		return $this->layout;
 	}
 		
 	public function setName($name)

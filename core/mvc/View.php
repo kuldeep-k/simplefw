@@ -1,12 +1,13 @@
 <?php
 
 namespace SimpleFw\Core\Mvc;
-
-class ViewNotFoundException extends Exception {}
+use SimpleFw\Core\Mvc\Exception;
 
 class View
 {
 	public $controller; 	
+	public $template; 	
+	public $layout;
 	public function inject($controller)
 	{
 		$this->controller = $controller;
@@ -17,34 +18,35 @@ class View
 			{
 				$this->controller->setTemplate($this->controller->getControllerName().'/'.$this->controller->setActionName());
 			}
-			$this->template = '../app/views/templates/'.$this->controller->getTemplate().'.php';
-			
+			$this->template = __DIR__.'/../../app/view/templates/'.$this->controller->getTemplate().'.php';
+			//echo 'SSSSSSSSSSS';
 			if(!file_exists($this->template))
 			{
+				echo 'ssssss';
 				throw new ViewNotFoundException();
 			}
 		}	
 
-
-		if($this->controller->getLayout() != false)
+		if($this->controller->getLayout() !== false)
 		{
 			if(is_null($this->controller->getLayout()))
 			{
 				$this->controller->setLayout('layout');
 			}
-			$this->layout = '../app/views/layouts/'.$this->controller->getLayout().'.php';
+			$this->layout = __DIR__.'/../../app/view/layouts/'.$this->controller->getLayout().'.php';
 			
 			if(!file_exists($this->layout))
 			{
+				echo 'AA';
 				throw new ViewNotFoundException();
 			}
 		}	
 		
 	}	
-	public function render()
+	public function render($page)
 	{
-		$data = $this->controller->getViewParams();
 		ob_start();
+		
 		include($this->template);
 		$content = ob_get_clean();
 		//echo $content;

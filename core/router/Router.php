@@ -2,8 +2,6 @@
 
 namespace SimpleFw\Core\Router;
 
-class RouteException extends \Exception {}
-
 class Router 
 {
 	const ERR_ROUTE_NOT_EXISTS = 100;
@@ -43,7 +41,7 @@ class Router
 		{
 			$uri_part1 = $this->uri;
 		}
-			
+		
 		foreach($this->defined_routes as $route) 
 		{
 			if(preg_match('/^\/'.$route['pattern'].'$/', $uri_part1, $return))
@@ -62,13 +60,13 @@ class Router
 		{
 			$this->controller_name = $this->safe($this->controller_name);
 		}	
-		$controller_file_name = DOC_ROOT.'/app/controllers/'.$this->controller_name.'.php';
+		$controller_file_name = DOC_ROOT.'/app/controller/'.ucfirst($this->controller_name).'Controller.php';
 		if(!file_exists($controller_file_name))
 		{
 			throw new RouteException(self::ERR_CONTROLLER_NOT_EXISTS);
 		}
 		require_once($controller_file_name);	
-		$controller_class_name = "Simplefw\\App\\Controller\\".ucfirst($this->controller_name);
+		$controller_class_name = "Simplefw\\App\\Controller\\".ucfirst($this->controller_name).'Controller';
 		if(!class_exists($controller_class_name)) 
 		{
 			throw new RouteException(self::ERR_CONTROLLER_NOT_EXISTS);
@@ -76,6 +74,7 @@ class Router
 		
 		$this->controller = new $controller_class_name;
 		$this->controller->setName($this->controller_name);	
+		
 		return $this->controller;
 	}
 	
@@ -91,6 +90,7 @@ class Router
 		}
 		$this->action = $this->action_name.'Action';
 		$this->controller->setActionName($this->action_name);
+		$this->controller->setTemplate($this->controller_name.'/'.$this->action_name);
 		return $this->action;
 	}
 	

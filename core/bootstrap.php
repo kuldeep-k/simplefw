@@ -1,9 +1,10 @@
 <?php
 
 namespace SimpleFw\Core;
-
+use SimpleFw\Core\Mvc\View;
 use SimpleFw\Core\Router\Router;
-use SimpleFw\Core\Database\Database;
+use SimpleFw\Core\Router\RouteException;
+
 //require_once(DOC_ROOT.'/core/Controller.php');
 //require_once(DOC_ROOT.'/core/Router.php');
 //require_once(DOC_ROOT.'/core/Database.php');
@@ -13,16 +14,25 @@ use SimpleFw\Core\Database\Database;
 
 try
 {
-
-	spl_autoload_register(function ($class_name){
+	set_exception_handler( function ($exception) {
+		  echo "Uncaught exception: " , $exception->getMessage(), "\n";
+		}
+	);
+	$registered_ns = array('SimpleFw\App\Controller' => 'app\controllers',
+			'SimpleFw\App\Model'=> 'app\models');
+	spl_autoload_register(function ($class_name) {
+		//echo $class_name;
+		//echo ' --- ';
 		$class_name_path = str_replace("\\", "/", str_replace("SimpleFw\\", "", $class_name));
+		//echo ' --- ';
 		$class_name_path .= '.php';
 		$class_file_dir = strtolower(dirname($class_name_path));
+		//echo ' --- ';
 		$class_file_name = basename($class_name_path);
-		//echo '<br />';
+		
 		//echo $class_name.' - ';
 		//echo $class_file_dir.'/'.$class_file_name;
-		include('../'.$class_file_dir.'/'.$class_file_name);
+		require_once('../'.$class_file_dir.'/'.$class_file_name);
 	});
 
 	$current_uri = $_SERVER['REQUEST_URI'];
@@ -40,6 +50,7 @@ try
 	}
 	$controller_object = $router->getController();
 	
+	
 	//$view = new View();
 	
 	//$controller_object->setView($view);		
@@ -49,7 +60,8 @@ try
 		throw new RouteException(Router::ERR_ACTION_NOT_EXISTS);
 	}
 	//echo 'hello';
-	$db =  new Database('mysqli://root:root@localhost/prog_lang');
+	
+	
 	$controller_object->setQuery($router->getQuery());
 	$content = call_user_func(array($controller_object, $router->getAction()));
 	
@@ -57,7 +69,8 @@ try
 	{
 		//$controller_object->getView()->render($content);
 		$view = new View();
-		$result = $view->inject($controller_object)->render();
+		$view->inject($controller_object);
+		$result = $view->render($content);
 	}		
 		
 

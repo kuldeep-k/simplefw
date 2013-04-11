@@ -2,7 +2,7 @@ simplefw
 ========
 
 Simple PHP Framework implementing the basic MVC setup for a project. Core code is small and simple enough to understand and play with.  
-It is php5.3 Framework as It used some 5.3 only functionality like namespace and closure.
+It is php5.3 Framework as It used some 5.3 only functionality like namespace and closures.
 
 TODOs
 Implementing Form Lib and Form widgets.

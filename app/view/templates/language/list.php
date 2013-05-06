@@ -1,5 +1,7 @@
 <h2>Language List</h2>
 
+<a href="/language/add">Add</a>
+
 <table border=1 >
 <?php if(is_array($page['languages']) && sizeof($page['languages']) > 0) { ?>
 <tr>

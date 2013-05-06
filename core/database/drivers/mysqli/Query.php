@@ -23,29 +23,58 @@ class Query implements QueryInterface
 	}	
 	public function query($query, array $bind_params = null)
 	{
-		
-		$result_set = $this->connection->query($query);
-		echo $this->connection->error;
+		$this->query = $query;
+		return $this;
+	}
+	public function insert($table, array $data)
+	{
+		$query = "INSERT INTO `".$table."`  ";
+		if(sizeof($data) > 0)
+		{
+			foreach($data as $field=>$value)
+			{
+				$clause1 .= '`'.$field.'`,';
+				switch(gettype($value))
+				{
+					case "integer";
+					case "double";
+						$clause2 .= $value.', ';
+						break;
+					case "string";
+						$clause2 .= '\''.$value.'\', ';
+						break;
+					default:
+						throw new QueryException('Only Integer/Double/String are allowed as query arguments.');
+						break; 		
+				}	 
+				
+			}	
+			$clause1 = rtrim($clause1, ',');
+			$clause2 = rtrim($clause2, ',');
+			
+			$query .= '('.$clause1.') VALUES ('.$clause2.')'; 
+		}	
+		$this->query = $query;
+	}
+	public function update($table, array $data, array $conditions = null )
+	{
+	}
+	public function delete($table, array $conditions)
+	{
+	}
+	public function __toString()
+	{
+		return $this->query;
+	}
+	public function execute()
+	{
+		$result_set = $this->connection->query($this->query);
+		//echo $this->connection->error;
 		//var_dump($this->connection->errono);
 		//$result_class = "SimpleFw\Core\Database\Drivers\\".$db_driver."\\Result";
 		$this->result->setResultSet($result_set);
 		//var_dump($this->result);
 		return $this->result;
-	}
-	public function insert(array $data)
-	{
-	}
-	public function update(array $data, array $conditions = null )
-	{
-	}
-	public function delete(array $conditions)
-	{
-	}
-	public function __toString()
-	{
-	}
-	public function execute()
-	{
 	}
 		
 }

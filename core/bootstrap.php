@@ -2,6 +2,7 @@
 
 namespace SimpleFw\Core;
 use SimpleFw\Core\Mvc\View;
+use SimpleFw\Core\Http\Request;
 use SimpleFw\Core\Router\Router;
 use SimpleFw\Core\Router\RouteException;
 
@@ -35,35 +36,39 @@ try
 		require_once('../'.$class_file_dir.'/'.$class_file_name);
 	});
 
-	$current_uri = $_SERVER['REQUEST_URI'];
+	//$current_uri = $_SERVER['REQUEST_URI'];
 	
-	$router = new Router($current_uri);
+	//$router = new Router($current_uri);
 	
-	if(!$router->parse($current_uri))
+	$request = Request::getInstance();
+	
+	$request->setRouter(new Router($_SERVER['REQUEST_URI']));
+	
+	if(!$request->getRouter()->parse())
 	{
 		throw new RouteException(Router::ERR_ROUTE_NOT_EXISTS);
 	}	
 		
-	if(!$router->getController())
+	if(!$request->getController())
 	{
 		throw new RouteException(Router::ERR_CONTROLLER_NOT_EXISTS);
 	}
-	$controller_object = $router->getController();
 	
+	//$controller_object = $request->getRequest();
+	
+	$controller_object = $request->getController();
 	
 	//$view = new View();
 	
 	//$controller_object->setView($view);		
 
-	if(!$router->getAction())
+	if(!$request->getAction())
 	{
 		throw new RouteException(Router::ERR_ACTION_NOT_EXISTS);
 	}
-	//echo 'hello';
 	
-	
-	$controller_object->setQuery($router->getQuery());
-	$content = call_user_func(array($controller_object, $router->getAction()));
+	//$controller_object->getRequest()->setQuery($router->getQuery());
+	$content = call_user_func(array($controller_object, $request->getAction()));
 	
 	if($controller_object->getTemplate() != false)
 	{
@@ -72,8 +77,7 @@ try
 		$view->inject($controller_object);
 		$result = $view->render($content);
 	}		
-		
-
+	
 }
 catch(RouteException $e)
 {

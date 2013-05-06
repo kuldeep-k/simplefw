@@ -11,21 +11,17 @@ class Router
 	const ERR_ACTION_NOT_EXISTS  = 102;
 	
 	protected $is_raw = false;
-	protected $controller;
 	
-	protected $controller_name;
+	public $controller_name;
 	
-	protected $action;
+	public $action_name;
 	
-	protected $action_name;
-	
-	protected $query_string;
+	public $query_string;
 	
 	public function __construct($uri)
 	{
-		//global $app_routes;
 		$this->uri = $uri;
-		//print_r($app_routes);
+		
 		$this->defined_routes = require_once(DOC_ROOT.'/config/routes.php');;
 	}
 	
@@ -53,64 +49,6 @@ class Router
 		}	
 		return false;
 	}		
-	
-	public function getController()
-	{
-		if($this->is_raw === false)
-		{
-			$this->controller_name = $this->safe($this->controller_name);
-		}	
-		$controller_file_name = DOC_ROOT.'/app/controller/'.ucfirst($this->controller_name).'Controller.php';
-		if(!file_exists($controller_file_name))
-		{
-			throw new RouteException(self::ERR_CONTROLLER_NOT_EXISTS);
-		}
-		require_once($controller_file_name);	
-		$controller_class_name = "Simplefw\\App\\Controller\\".ucfirst($this->controller_name).'Controller';
-		if(!class_exists($controller_class_name)) 
-		{
-			throw new RouteException(self::ERR_CONTROLLER_NOT_EXISTS);
-		}			
-		
-		$this->controller = new $controller_class_name;
-		$this->controller->setName($this->controller_name);	
-		
-		return $this->controller;
-	}
-	
-	public function getAction()
-	{
-		if($this->is_raw == false)
-		{
-			$this->action_name = $this->safe($this->action_name);
-		}
-		if(!method_exists($this->controller, $this->action_name.'Action')) 
-		{
-			throw new RouteException(self::ERR_ACTION_NOT_EXISTS);
-		}
-		$this->action = $this->action_name.'Action';
-		$this->controller->setActionName($this->action_name);
-		$this->controller->setTemplate($this->controller_name.'/'.$this->action_name);
-		return $this->action;
-	}
-	
-	public function getQuery()
-	{
-		parse_str($this->query_string, $temp);
-		
-		if(is_array($temp))
-		{
-			foreach($temp as $key => $val)
-			{
-				if($this->is_raw == false)
-				{
-					$temp[$key] = $this->safe($val);
-				}
-			}	
-		}
-		
-		return $temp;
-	}
 	
 	protected function safe($value)
 	{

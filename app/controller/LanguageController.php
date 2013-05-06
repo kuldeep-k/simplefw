@@ -15,12 +15,15 @@ class LanguageController extends Controller
 		
 		return array('languages' => $langauges);
 		
-		//echo 'Hello World';
+		
 	}
 	
 	public function addAction()
 	{
-		echo 'Hello World Add';
+		
+		//header('content-type: appliaction:json');
+		//echo json_encode(array('title' => 'Hello World Add'));
+		//exit;
 	}	
 }	
 

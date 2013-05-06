@@ -8,7 +8,7 @@ class LanguageModel extends Model
 {
 	public function getLanguages()
 	{
-		$result = $this->db->getQuery()->query('select * from programming_language ');
+		$result = $this->db->getQuery()->query('select * from programming_language ')->execute();
 		return $result->fetchAll();
 	}	
 }	

@@ -2,26 +2,44 @@
 
 namespace SimpleFw\Core\Mvc;
 
+use SimpleFw\Core\Request;
+use SimpleFw\Core\Response;
+
+
 class Controller 
 {
 	protected $query;
 	
+	protected $request;
+	
 	protected $template;
+	
+	protected $layout;
 	
 	protected $name;
 	
 	protected $action_name;
 	
-	public function setQuery($query)
+	public function setRequest(Request $request)
 	{
-		$this->query = $query;
+		$this->request = $request;
 	}	
 	
-	public function getQuery()
+	public function getRequest()
 	{
-		return $this->query;
+		return $this->request;
 	}
 
+	public function setResponse($response)
+	{
+		$this->response = $response;
+	}	
+	
+	public function getResponse()
+	{
+		return $this->response;
+	}
+	
 	public function setTemplate($template)
 	{
 		$this->template = $template;

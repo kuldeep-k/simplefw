@@ -2,12 +2,15 @@
 
 namespace SimpleFw\Core\Mvc;
 use SimpleFw\Core\Mvc\Exception;
+use SimpleFw\Core\Tools\Helper;
 
 class View
 {
 	public $controller; 	
 	public $template; 	
 	public $layout;
+	public $page;
+	
 	public function inject($controller)
 	{
 		$this->controller = $controller;
@@ -19,10 +22,9 @@ class View
 				$this->controller->setTemplate($this->controller->getControllerName().'/'.$this->controller->setActionName());
 			}
 			$this->template = __DIR__.'/../../app/view/templates/'.$this->controller->getTemplate().'.php';
-			//echo 'SSSSSSSSSSS';
+			
 			if(!file_exists($this->template))
 			{
-				echo 'ssssss';
 				throw new ViewNotFoundException();
 			}
 		}	
@@ -37,7 +39,6 @@ class View
 			
 			if(!file_exists($this->layout))
 			{
-				echo 'AA';
 				throw new ViewNotFoundException();
 			}
 		}	
@@ -45,6 +46,8 @@ class View
 	}	
 	public function render($page)
 	{
+		$this->page = $page;
+		$this->helper = Helper::getInstance();
 		ob_start();
 		
 		include($this->template);

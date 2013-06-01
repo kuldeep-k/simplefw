@@ -4,7 +4,7 @@
 
 <div class="form-row">
 <label for="name" >Name </label>
-<input type="text" name="name" id="name" />
+<input type="text" name="language_name" id="language_name" />
 </div>
 <div class="clear-row"></div>
 

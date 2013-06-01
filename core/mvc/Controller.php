@@ -80,6 +80,12 @@ class Controller
 		return $this->action_name;
 	}	
 	
+	public function redirect($url)
+	{
+		header('location: /'.$url);
+		exit;
+	}	
+	
 }	
 
 ?>

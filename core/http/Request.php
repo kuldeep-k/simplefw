@@ -3,6 +3,7 @@
 namespace SimpleFw\Core\Http;
 
 use SimpleFw\Core\Router\Router;
+use SimpleFw\Core\Router\RouteException;
 
 class Request 
 {
@@ -80,7 +81,7 @@ class Request
 		
 		if(!method_exists($this->controller, $this->action_name.'Action')) 
 		{
-			throw new RouteException(self::ERR_ACTION_NOT_EXISTS);
+			throw new RouteException('Required Action not found', self::ERR_ACTION_NOT_EXISTS);
 		}
 		$this->action = $this->action_name.'Action';
 		$this->controller->setActionName($this->action_name);
@@ -130,6 +131,16 @@ class Request
 		
 		return $posts;
 	}
+	
+	public function hasPost()
+	{
+		if($_SERVER['REQUEST_METHOD'] == 'POST')
+		{
+			return true;
+		}	
+		
+		return false;
+	}	
 	
 	protected function safe($value)
 	{

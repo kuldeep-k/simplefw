@@ -2,5 +2,5 @@
 
 namespace SimpleFw\Core\Database;
 
-class QueryException extends \Exception;
+class QueryException extends \Exception {} 
 

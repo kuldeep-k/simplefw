@@ -1,10 +1,16 @@
 <?php
+/**
+ * SimpleFw Framework
+ *
+ * @copyright Copyright (c) 2013 Kuldeep Kamboj
+ * @license   New BSD License
+ */
 
 namespace SimpleFw\Core\Mvc;
 
 use SimpleFw\Core\Request;
 use SimpleFw\Core\Response;
-
+use SimpleFw\Core\Tools\AppConfig;
 
 class Controller 
 {
@@ -19,6 +25,8 @@ class Controller
 	protected $name;
 	
 	protected $action_name;
+	
+	public $app_config;
 	
 	public function setRequest(Request $request)
 	{
@@ -70,6 +78,16 @@ class Controller
 		return $this->name;
 	}	
 	
+	public function setControllerName($action_name)
+	{
+		$this->controller_name = $controller_name;
+	}	
+
+	public function getControllerName()
+	{
+		return $this->controller_name;
+	}
+	
 	public function setActionName($action_name)
 	{
 		$this->action_name = $action_name;
@@ -82,7 +100,10 @@ class Controller
 	
 	public function redirect($url)
 	{
-		header('location: /'.$url);
+		$app_config = AppConfig::getInstance();
+		//die($app_config->site_root.'/'.$url);
+		
+		header('location: http://'.$_SERVER['HTTP_HOST'].$app_config->site_root.$url);
 		exit;
 	}	
 	

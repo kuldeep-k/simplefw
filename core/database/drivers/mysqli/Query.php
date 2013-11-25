@@ -1,4 +1,10 @@
 <?php
+/**
+ * SimpleFw Framework
+ *
+ * @copyright Copyright (c) 2013 Kuldeep Kamboj
+ * @license   New BSD License
+ */
 
 namespace SimpleFw\Core\Database\Drivers\Mysqli;
 
@@ -43,7 +49,7 @@ class Query implements QueryInterface
 						$clause2 .= $value.', ';
 						break;
 					case "string";
-						$clause2 .= '\''.$value.'\', ';
+						$clause2 .= '\''.$this->connection->escape_string($value).'\', ';
 						break;
 					default:
 						throw new QueryException('Only Integer/Double/String are allowed as query arguments.');

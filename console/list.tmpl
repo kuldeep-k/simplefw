@@ -1,0 +1,26 @@
+<h2>__CMODULE__ Listing</h2>
+
+<a href="/__MODULE_LINK__/add">Add</a>
+
+<table class="grid" >
+<thead>
+<tr>
+	__FIELD_LOOP_START__
+	<th>DFIELD_LBL</th>
+	__FIELD_LOOP_END__
+	<th>&nbsp;</th>
+</tr>
+</thead>
+
+<tbody>
+	___DATA_LOOP_START__
+<tr>
+	__FIELD_LOOP_START__
+	<td><?php echo \$__MODULE__['DFIELD'] ?></td>
+	__FIELD_LOOP_START__
+	<td><a href="<?php echo \$this->helper->link('__MODULE_LINK__/edit', array('id' => \$__MODULE__['id'])) ?>" >Edit</a> | <a href="<?php echo \$this->helper->link('__MODULE_LINK__/delete', array('id' => \$__MODULE__['id'])) ?>" >Delete</a></td>
+	
+</tr>
+</tbody>
+___DATA_LOOP_END__
+</table>

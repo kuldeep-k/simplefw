@@ -1,0 +1,18 @@
+<h2>Edit __CMODULE__</h2>
+
+<form name="edit-form" id="add-form" method="post">
+<input type="hidden" name="id" id="id" value="<?php echo $this->page['__MODULE__']['id'] ?>" />
+__LOOP_START__
+<div class="form-row">
+<label for="__FIELD__" >__LABEL__ </label>
+<input type="text" name="__FIELD__" id="__FIELD__" value="<?php echo $this->page['__MODULE__']['__FIELD__'] ?>" />
+</div>
+<div class="clear-row"></div>
+__LOOP_END__
+
+<div class="form-row">
+<input type="submit" name="submit" id="submit" value="Save" />
+</div>
+<div class="clear-row"></div>
+
+</form>

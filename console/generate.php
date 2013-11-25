@@ -196,7 +196,9 @@ foreach($fields as $field_row)
 		$view_skleton .= '
 			<div class="form-row">
 			<label for="'.$field_row['Field'].'" >'.$field_label.'</label>
-			<input type="text" name="'.$field_row['Field'].'" id="'.$field_row['Field'].'" />
+			<!--<input type="text" name="'.$field_row['Field'].'" id="'.$field_row['Field'].'" />-->
+			<?php echo $this->form->text("'.$field_row['Field'].'") ?>
+	
 			</div>
 			<div class="clear-row"></div>';
 	}		
@@ -232,7 +234,8 @@ foreach($fields as $field_row)
 		$view_skleton .= '
 			<div class="form-row">
 			<label for="'.$field_row['Field'].'" >'.$field_label.'</label>
-			<input type="text" name="'.$field_row['Field'].'" id="'.$field_row['Field'].'" value="<?php echo $this->page[\'__MODULE__\'][\''.$field_row['Field'].'\'] ?>" />
+			<!--<input type="text" name="'.$field_row['Field'].'" id="'.$field_row['Field'].'" value="<?php echo $this->page[\'__MODULE__\'][\''.$field_row['Field'].'\'] ?>" />-->
+			<?php echo $this->form->text("'.$field_row['Field'].'", $this->page[\'__MODULE__\'][\''.$field_row['Field'].'\']) ?>
 			</div>
 			<div class="clear-row"></div>';
 	}		

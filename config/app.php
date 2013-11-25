@@ -8,15 +8,16 @@
 
 //namespace SimpleFw\Core;
 
-$_APP_CONFIG =  array (
+return array (
+	'site_root' => '/simplefw/web/',
 	'application_title' => 'Simplefw Intro', 
-	'home_route' => 'language/list',
+	'home_route' => 'home/index',
 	'DB' => array(
 		'driver' => 'mysqli',
 		'username' => 'root',
 		'password' => 'root',
 		'host' => 'localhost',
-		'database' => 'prog_lang'
+		'database' => 'test_db'
 	)
 );
 

@@ -1,8 +1,17 @@
 <?php
+/**
+ * SimpleFw Framework
+ *
+ * @copyright Copyright (c) 2013 Kuldeep Kamboj
+ * @license   New BSD License
+ */
 
 namespace SimpleFw\Core\Mvc;
-use SimpleFw\Core\Mvc\Exception;
+use SimpleFw\Core\Mvc\Exception\ViewNotFoundException;
 use SimpleFw\Core\Tools\Helper;
+use SimpleFw\Core\Tools\Form;
+use SimpleFw\Core\Tools\FlashMessage;
+use SimpleFw\Core\Tools\AppConfig;
 
 class View
 {
@@ -10,7 +19,8 @@ class View
 	public $template; 	
 	public $layout;
 	public $page;
-	
+	public $AppConfig;
+		
 	public function inject($controller)
 	{
 		$this->controller = $controller;
@@ -19,13 +29,14 @@ class View
 		{
 			if(is_null($this->controller->getTemplate()))
 			{
+				
 				$this->controller->setTemplate($this->controller->getControllerName().'/'.$this->controller->setActionName());
 			}
 			$this->template = __DIR__.'/../../app/view/templates/'.$this->controller->getTemplate().'.php';
 			
 			if(!file_exists($this->template))
 			{
-				throw new ViewNotFoundException();
+				throw new ViewNotFoundException('Template File `'.$this->template.'` not found');
 			}
 		}	
 
@@ -48,13 +59,21 @@ class View
 	{
 		$this->page = $page;
 		$this->helper = Helper::getInstance();
+		$this->form = Form::getInstance();
+		$this->FlashMessage = FlashMessage::getInstance();
+		$this->AppConfig = AppConfig::getInstance();
+		
 		ob_start();
 		
 		include($this->template);
-		$content = ob_get_clean();
-		//echo $content;
+		$this->content = ob_get_clean();
 		
+		if(!$this->http_metas['title'])
+		{
+			$this->http_metas['title'] = $this->AppConfig->application_title.'::'.$this->controller->getControllerName().'/'.$this->controller->getActionName();
+		}	
 		ob_start();
+		
 		include($this->layout);
 		$view_data = ob_get_clean();
 		echo $view_data;

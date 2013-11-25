@@ -1,4 +1,10 @@
 <?php
+/**
+ * SimpleFw Framework
+ *
+ * @copyright Copyright (c) 2013 Kuldeep Kamboj
+ * @license   New BSD License
+ */
 
 namespace SimpleFw\Core\Http;
 
@@ -11,7 +17,7 @@ class Request
 	
 	const ERR_ACTION_NOT_EXISTS  = 102;
 	
-	protected $is_raw = false;
+	public $is_raw = false;
 	
 	protected $router;
 	
@@ -115,6 +121,7 @@ class Request
 		{
 			if(is_array($_POST))
 			{
+				//var_dump($this->is_raw);die;
 				foreach($_POST as $key => $val)
 				{
 					if($this->is_raw == false)
